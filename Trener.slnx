@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="TrenerApp.Core/TrenerApp.Core.csproj" />
+  <Project Path="TrenerApp/TrenerApp.csproj">
+    <Deploy Solution="Debug|*" />
+  </Project>
+</Solution>

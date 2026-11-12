@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:TrenerApp.Core.Models;assembly=TrenerApp.Core"
+             x:Class="TrenerApp.Views.TrainingsPage"
+             Shell.NavBarIsVisible="False"
+             Title="Tréninky">
+
+    <!-- Stejné rozložení jako Soupiska: seznam + tlačítko + vpravo dole -->
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Padding="20,24,20,110" Spacing="8">
+
+                <!-- Hlavička -->
+                <Label x:Name="TeamLabel" Style="{StaticResource Overline}" />
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label Text="Tréninky" Style="{StaticResource PageTitle}" VerticalOptions="Center" />
+                    <Border Grid.Column="1"
+                            BackgroundColor="{StaticResource Secondary}"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 10"
+                            Padding="12,6"
+                            VerticalOptions="Center">
+                        <Label x:Name="CountLabel"
+                               FontFamily="OpenSansSemibold"
+                               FontSize="14"
+                               TextColor="{StaticResource Primary}" />
+                    </Border>
+                </Grid>
+                <Label Text="Plán tréninků a docházka hráčů" Style="{StaticResource PageSubtitle}" />
+
+                <Grid ColumnDefinitions="*,Auto" Margin="4,16,4,0">
+                    <Label Text="TRÉNINK" Style="{StaticResource Overline}" />
+                    <Label Grid.Column="1" Text="PŘÍTOMNO" Style="{StaticResource Overline}" />
+                </Grid>
+
+                <!-- Seznam tréninků -->
+                <VerticalStackLayout x:Name="TrainingsLayout" Spacing="8">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="models:Training">
+                            <Border Style="{StaticResource Card}" Padding="12">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnTrainingTapped" />
+                                </Border.GestureRecognizers>
+
+                                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+                                    <!-- Datum ve čtverečku (den a zkratka měsíce) -->
+                                    <Border WidthRequest="52"
+                                            HeightRequest="52"
+                                            BackgroundColor="{StaticResource Secondary}"
+                                            StrokeThickness="0"
+                                            StrokeShape="RoundRectangle 10">
+                                        <VerticalStackLayout VerticalOptions="Center" Spacing="-2">
+                                            <Label Text="{Binding DayLabel}"
+                                                   FontSize="19"
+                                                   FontFamily="OpenSansSemibold"
+                                                   TextColor="{StaticResource Primary}"
+                                                   HorizontalOptions="Center" />
+                                            <Label Text="{Binding MonthLabel}"
+                                                   FontSize="11"
+                                                   FontFamily="OpenSansSemibold"
+                                                   TextColor="{StaticResource Primary}"
+                                                   HorizontalOptions="Center" />
+                                        </VerticalStackLayout>
+                                    </Border>
+
+                                    <!-- Název, čas a zaměření -->
+                                    <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
+                                        <Label Text="{Binding Name}"
+                                               FontSize="16"
+                                               FontFamily="OpenSansSemibold"
+                                               TextColor="{StaticResource TextPrimary}" />
+                                        <Label FontSize="13" TextColor="{StaticResource TextMuted}">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding TimeLabel}" />
+                                                    <Span Text=" · " />
+                                                    <Span Text="{Binding Focus}" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                    </VerticalStackLayout>
+
+                                    <!-- Počet přítomných hráčů -->
+                                    <Label Grid.Column="2"
+                                           Text="{Binding AttendanceCount}"
+                                           FontSize="22"
+                                           FontFamily="OpenSansSemibold"
+                                           TextColor="{StaticResource Primary}"
+                                           VerticalOptions="Center"
+                                           Margin="0,0,8,0" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+                <!-- Zobrazí se jen když žádný trénink není -->
+                <Label x:Name="EmptyLabel"
+                       Text="Zatím tu není žádný trénink. Přidejte ho tlačítkem +."
+                       HorizontalTextAlignment="Center"
+                       TextColor="{StaticResource TextMuted}"
+                       Margin="0,20"
+                       IsVisible="False" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Tlačítko pro přidání tréninku -->
+        <ImageButton Source="ic_plus.png"
+                     BackgroundColor="{StaticResource Primary}"
+                     WidthRequest="64"
+                     HeightRequest="64"
+                     CornerRadius="32"
+                     Padding="18"
+                     Margin="0,0,20,20"
+                     HorizontalOptions="End"
+                     VerticalOptions="End"
+                     SemanticProperties.Description="Přidat trénink"
+                     Clicked="OnAddClicked" />
+    </Grid>
+
+</ContentPage>

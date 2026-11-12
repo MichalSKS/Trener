@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:TrenerApp.Views"
+             x:Class="TrenerApp.Views.TrainingEditPage"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False"
+             Title="Trénink">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,20,20,32" Spacing="18">
+
+            <!-- Šipka zpět a nadpis -->
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                <ImageButton Source="ic_back.png"
+                             WidthRequest="46"
+                             HeightRequest="46"
+                             Padding="12"
+                             CornerRadius="12"
+                             BorderColor="{StaticResource CardBorder}"
+                             BorderWidth="1"
+                             BackgroundColor="{StaticResource Surface}"
+                             Clicked="OnBackClicked" />
+                <Label x:Name="ModeLabel"
+                       Grid.Column="1"
+                       Style="{StaticResource Overline}"
+                       VerticalOptions="Center" />
+            </Grid>
+
+            <!-- Nadpis a čas jako v návrhu ("Trénink" ... "16:30–17:45") -->
+            <VerticalStackLayout Spacing="4">
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label Text="Trénink" Style="{StaticResource PageTitle}" FontSize="30" />
+                    <Label x:Name="TimeLabel"
+                           Grid.Column="1"
+                           FontSize="16"
+                           FontFamily="OpenSansSemibold"
+                           TextColor="{StaticResource Primary}"
+                           VerticalOptions="Center" />
+                </Grid>
+                <Label x:Name="DateLabel" Style="{StaticResource PageSubtitle}" />
+            </VerticalStackLayout>
+
+            <!-- Název tréninku -->
+            <VerticalStackLayout Spacing="6">
+                <Label Text="Název" Style="{StaticResource FieldLabel}" />
+                <Border Style="{StaticResource InputBorder}">
+                    <Entry x:Name="NameEntry" Style="{StaticResource FormEntry}" Placeholder="např. Úterní kondice" />
+                </Border>
+            </VerticalStackLayout>
+
+            <!-- Zaměření -->
+            <VerticalStackLayout Spacing="6">
+                <Label Text="Zaměření" Style="{StaticResource FieldLabel}" />
+                <Border Style="{StaticResource InputBorder}">
+                    <Entry x:Name="FocusEntry" Style="{StaticResource FormEntry}" Placeholder="např. Kondice, Technika" />
+                </Border>
+            </VerticalStackLayout>
+
+            <!-- Datum a čas vedle sebe -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Datum" Style="{StaticResource FieldLabel}" />
+                    <Border Style="{StaticResource InputBorder}">
+                        <DatePicker x:Name="TrainingDatePicker"
+                                    Format="d. M. yyyy"
+                                    FontSize="17"
+                                    TextColor="{StaticResource TextPrimary}"
+                                    DateSelected="OnDateOrTimeChanged" />
+                    </Border>
+                </VerticalStackLayout>
+                <VerticalStackLayout Grid.Column="1" Spacing="6">
+                    <Label Text="Začátek" Style="{StaticResource FieldLabel}" />
+                    <Border Style="{StaticResource InputBorder}">
+                        <TimePicker x:Name="StartTimePicker"
+                                    Format="HH:mm"
+                                    FontSize="17"
+                                    TextColor="{StaticResource TextPrimary}"
+                                    TimeSelected="OnDateOrTimeChanged" />
+                    </Border>
+                </VerticalStackLayout>
+            </Grid>
+
+            <!-- Délka v minutách -->
+            <VerticalStackLayout Spacing="6">
+                <Label Text="Délka (minuty)" Style="{StaticResource FieldLabel}" />
+                <Border Style="{StaticResource InputBorder}" WidthRequest="120" HorizontalOptions="Start">
+                    <Entry x:Name="DurationEntry"
+                           Style="{StaticResource FormEntry}"
+                           Keyboard="Numeric"
+                           MaxLength="3"
+                           TextChanged="OnDurationChanged" />
+                </Border>
+            </VerticalStackLayout>
+
+            <!-- Docházka -->
+            <Grid ColumnDefinitions="*,Auto" Margin="0,8,0,0">
+                <Label Text="Docházka"
+                       FontSize="20"
+                       FontFamily="OpenSansSemibold"
+                       TextColor="{StaticResource TextPrimary}" />
+                <Label x:Name="AttendanceLabel"
+                       Grid.Column="1"
+                       FontSize="14"
+                       FontFamily="OpenSansSemibold"
+                       TextColor="{StaticResource Primary}"
+                       VerticalOptions="Center" />
+            </Grid>
+
+            <Border Style="{StaticResource Card}" Margin="0,-8,0,0">
+                <!-- Pro každého hráče ze soupisky jeden řádek se zaškrtávátkem -->
+                <VerticalStackLayout x:Name="AttendanceLayout">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="views:AttendanceRow">
+                            <VerticalStackLayout>
+                                <BoxView HeightRequest="1"
+                                         Color="{StaticResource CardBorder}"
+                                         IsVisible="{Binding ShowLine}" />
+                                <Grid ColumnDefinitions="36,*,Auto" Padding="16,6">
+                                    <Label Text="{Binding Player.JerseyNumber}"
+                                           FontSize="14"
+                                           FontFamily="OpenSansSemibold"
+                                           TextColor="{StaticResource TextMuted}"
+                                           VerticalOptions="Center" />
+                                    <Label Grid.Column="1"
+                                           Text="{Binding Player.FullName}"
+                                           FontSize="17"
+                                           FontFamily="OpenSansSemibold"
+                                           TextColor="{StaticResource TextPrimary}"
+                                           VerticalOptions="Center" />
+                                    <!-- Mode=TwoWay: zaškrtnutí se zapíše zpátky do IsPresent -->
+                                    <CheckBox Grid.Column="2"
+                                              IsChecked="{Binding IsPresent, Mode=TwoWay}"
+                                              Color="{StaticResource Primary}"
+                                              CheckedChanged="OnAttendanceChanged" />
+                                </Grid>
+                            </VerticalStackLayout>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+            </Border>
+
+            <Label Text="Zaškrtnutí označuje přítomného hráče."
+                   FontSize="13"
+                   TextColor="{StaticResource TextMuted}"
+                   Margin="4,-10,0,0" />
+
+            <Button Text="Uložit trénink"
+                    Style="{StaticResource PrimaryButton}"
+                    Margin="0,8,0,0"
+                    Clicked="OnSaveClicked" />
+
+            <!-- Smazání jen u existujícího tréninku -->
+            <Button x:Name="DeleteButton"
+                    Text="Smazat trénink"
+                    Style="{StaticResource DangerButton}"
+                    Clicked="OnDeleteClicked" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

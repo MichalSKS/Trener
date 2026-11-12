@@ -1,0 +1,12 @@
+# Výstupy sestavení (vytvoří se znovu při buildu)
+bin/
+obj/
+
+# Nastavení Visual Studia pro konkrétního uživatele
+.vs/
+*.user
+*.suo
+
+# Soubory systému
+.DS_Store
+Thumbs.db

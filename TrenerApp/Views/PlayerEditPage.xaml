@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TrenerApp.Views.PlayerEditPage"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False"
+             Title="Hráč">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,20,20,32" Spacing="18">
+
+            <!-- Šipka zpět a nadpis -->
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                <ImageButton Source="ic_back.png"
+                             WidthRequest="46"
+                             HeightRequest="46"
+                             Padding="12"
+                             CornerRadius="12"
+                             BorderColor="{StaticResource CardBorder}"
+                             BorderWidth="1"
+                             BackgroundColor="{StaticResource Surface}"
+                             Clicked="OnBackClicked" />
+                <Label x:Name="ModeLabel"
+                       Grid.Column="1"
+                       Style="{StaticResource Overline}"
+                       VerticalOptions="Center" />
+            </Grid>
+
+            <Label x:Name="TitleLabel" Style="{StaticResource PageTitle}" FontSize="30" />
+
+            <!-- Jméno -->
+            <VerticalStackLayout Spacing="6">
+                <Label Text="Jméno" Style="{StaticResource FieldLabel}" />
+                <Border Style="{StaticResource InputBorder}">
+                    <Entry x:Name="FirstNameEntry" Style="{StaticResource FormEntry}" Placeholder="např. Jan" />
+                </Border>
+            </VerticalStackLayout>
+
+            <!-- Příjmení -->
+            <VerticalStackLayout Spacing="6">
+                <Label Text="Příjmení" Style="{StaticResource FieldLabel}" />
+                <Border Style="{StaticResource InputBorder}">
+                    <Entry x:Name="LastNameEntry" Style="{StaticResource FormEntry}" Placeholder="např. Novák" />
+                </Border>
+            </VerticalStackLayout>
+
+            <!-- Číslo dresu (Keyboard="Numeric" = na mobilu se ukáže číselná klávesnice) -->
+            <VerticalStackLayout Spacing="6">
+                <Label Text="Číslo dresu (1–99)" Style="{StaticResource FieldLabel}" />
+                <Border Style="{StaticResource InputBorder}" WidthRequest="120" HorizontalOptions="Start">
+                    <Entry x:Name="NumberEntry" Style="{StaticResource FormEntry}" Keyboard="Numeric" MaxLength="2" />
+                </Border>
+            </VerticalStackLayout>
+
+            <!-- Post (položky se doplní v kódu) -->
+            <VerticalStackLayout Spacing="6">
+                <Label Text="Post" Style="{StaticResource FieldLabel}" />
+                <Border Style="{StaticResource InputBorder}">
+                    <Picker x:Name="PositionPicker" FontSize="17" TextColor="{StaticResource TextPrimary}" />
+                </Border>
+            </VerticalStackLayout>
+
+            <!-- Poznámka -->
+            <VerticalStackLayout Spacing="6">
+                <Label Text="Poznámka" Style="{StaticResource FieldLabel}" />
+                <Border Style="{StaticResource InputBorder}">
+                    <Editor x:Name="NoteEditor"
+                            HeightRequest="90"
+                            FontSize="16"
+                            TextColor="{StaticResource TextPrimary}"
+                            Placeholder="např. zranění, kontakt na rodiče"
+                            PlaceholderColor="{StaticResource Gray300}" />
+                </Border>
+            </VerticalStackLayout>
+
+            <Button Text="Uložit hráče"
+                    Style="{StaticResource PrimaryButton}"
+                    Margin="0,8,0,0"
+                    Clicked="OnSaveClicked" />
+
+            <!-- Tlačítko pro smazání se ukáže jen při úpravě existujícího hráče -->
+            <Button x:Name="DeleteButton"
+                    Text="Odebrat ze soupisky"
+                    Style="{StaticResource DangerButton}"
+                    Clicked="OnDeleteClicked" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

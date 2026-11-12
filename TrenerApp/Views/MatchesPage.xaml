@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TrenerApp.Views.MatchesPage"
+             Shell.NavBarIsVisible="False"
+             Title="Zápasy">
+
+    <!-- Zatím jen zástupná obrazovka, sestava a hodnocení přijdou v další fázi -->
+    <VerticalStackLayout Padding="20,24" Spacing="6">
+        <Label Text="Zápasy" Style="{StaticResource PageTitle}" />
+        <Label Text="Sestavení zápasu a hodnocení hráčů se připravují."
+               Style="{StaticResource PageSubtitle}" />
+    </VerticalStackLayout>
+
+</ContentPage>

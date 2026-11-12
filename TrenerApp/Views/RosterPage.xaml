@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:TrenerApp.Core.Models;assembly=TrenerApp.Core"
+             x:Class="TrenerApp.Views.RosterPage"
+             Shell.NavBarIsVisible="False"
+             Title="Soupiska">
+
+    <!-- Grid kvůli tomu, aby tlačítko + mohlo být "nad" seznamem -->
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Padding="20,24,20,110" Spacing="8">
+
+                <!-- Hlavička -->
+                <Label x:Name="TeamLabel" Style="{StaticResource Overline}" />
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label Text="Soupiska" Style="{StaticResource PageTitle}" VerticalOptions="Center" />
+                    <Border Grid.Column="1"
+                            BackgroundColor="{StaticResource Secondary}"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 10"
+                            Padding="12,6"
+                            VerticalOptions="Center">
+                        <Label x:Name="CountLabel"
+                               FontFamily="OpenSansSemibold"
+                               FontSize="14"
+                               TextColor="{StaticResource Primary}" />
+                    </Border>
+                </Grid>
+                <Label x:Name="SubtitleLabel" Style="{StaticResource PageSubtitle}" />
+
+                <Label Text="HRÁČ / POST" Style="{StaticResource Overline}" Margin="4,16,0,0" />
+
+                <!-- Seznam hráčů: pro každého hráče se vytvoří jedna karta podle šablony -->
+                <VerticalStackLayout x:Name="PlayersLayout" Spacing="8">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="models:Player">
+                            <Border Style="{StaticResource Card}" Padding="12">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnPlayerTapped" />
+                                </Border.GestureRecognizers>
+
+                                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                                    <!-- Číslo dresu -->
+                                    <Border WidthRequest="46"
+                                            HeightRequest="46"
+                                            BackgroundColor="{StaticResource Secondary}"
+                                            StrokeThickness="0"
+                                            StrokeShape="RoundRectangle 10">
+                                        <Label Text="{Binding JerseyNumber}"
+                                               FontSize="19"
+                                               FontFamily="OpenSansSemibold"
+                                               TextColor="{StaticResource Primary}"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center" />
+                                    </Border>
+
+                                    <!-- Jméno a post -->
+                                    <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
+                                        <Label Text="{Binding FullName}"
+                                               FontSize="16"
+                                               FontFamily="OpenSansSemibold"
+                                               TextColor="{StaticResource TextPrimary}" />
+                                        <HorizontalStackLayout Spacing="5">
+                                            <Image Source="{Binding PositionIcon}"
+                                                   WidthRequest="15"
+                                                   HeightRequest="15" />
+                                            <Label Text="{Binding PositionLabel}"
+                                                   FontSize="13"
+                                                   TextColor="{StaticResource TextMuted}" />
+                                        </HorizontalStackLayout>
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+                <!-- Zobrazí se jen když na soupisce nikdo není -->
+                <Label x:Name="EmptyLabel"
+                       Text="Soupiska je prázdná. Přidejte hráče tlačítkem +."
+                       HorizontalTextAlignment="Center"
+                       TextColor="{StaticResource TextMuted}"
+                       Margin="0,20"
+                       IsVisible="False" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Kulaté tlačítko pro přidání hráče vpravo dole -->
+        <ImageButton Source="ic_plus.png"
+                     BackgroundColor="{StaticResource Primary}"
+                     WidthRequest="64"
+                     HeightRequest="64"
+                     CornerRadius="32"
+                     Padding="18"
+                     Margin="0,0,20,20"
+                     HorizontalOptions="End"
+                     VerticalOptions="End"
+                     SemanticProperties.Description="Přidat hráče"
+                     Clicked="OnAddClicked" />
+    </Grid>
+
+</ContentPage>
